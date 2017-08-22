@@ -8,7 +8,7 @@
 
 <p>Login Information: </p>
 
-<form action="formhandler" method="post"> <!-- change action to addUser once write method-->
+<form action="addUser" method="post">
     First Name: <input type="text" name="FirstName" maxlength="20"><br/>
     Last Name: <input type="text" name="LastName" maxlength="20"><br/>
     Email: <input type="text" name="Email" maxlength="25" placeholder="name@email.com"><br/>
