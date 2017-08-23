@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>User Profile</title>
+    <title>Profile Form</title>
 </head>
 <body>
 

@@ -1,10 +1,24 @@
 package com.traventure.company.test.util;
 
+
 import model.DAO;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.json.HTTP;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 @Controller
 public class HomeController {
@@ -92,5 +106,57 @@ public class HomeController {
 
         return mv;
     }
+
+    @RequestMapping ("/groupon")
+    public ModelAndView groupon(){
+        try {
+
+            HttpClient http = HttpClientBuilder.create().build();
+
+            HttpHost host = new HttpHost("partner-api.groupon.com", 80,"http");
+
+            HttpGet getPage = new HttpGet("/deals.json?tsToken=US_AFF_0_201236_212556_0&channel_id=getaways&categories=Europe%2C%20Asia%2C%20Africa%2C%20%26%20Oceania&offset=0&limit=30");
+
+            HttpResponse resp = http.execute(host,getPage);
+
+            String jsonString = EntityUtils.toString(resp.getEntity());
+
+            JSONObject json = new JSONObject(jsonString);
+
+            //the int status will execute the success of the method or not(ex. local 404 error)
+            int status = resp.getStatusLine().getStatusCode();
+
+            JSONArray deals = json.getJSONArray("deals");
+            //JSONArray opt = json.getJSONObject("0").getJSONObject("price").getJSONArray("options");
+
+
+            JSONArray title = json.getJSONArray("deals");
+            JSONArray aTitle = json.getJSONArray("deals");
+            JSONArray highlightsHtml = json.getJSONArray("deals");
+            JSONArray pitch = json.getJSONArray("deals");
+            JSONArray url = json.getJSONArray("deals");
+            //JSONArray formattedAmount = json.getJSONObject("0").getJSONObject("price").getJSONArray("options");
+
+
+            ArrayList<Groupon> group = new ArrayList<Groupon>();
+
+            for (int i = 0; i < deals.length(); i++) {
+                group.add(new Groupon(deals.getJSONObject(i).getString("title"),
+                        deals.getJSONObject(i).getString("announcementTitle"),
+                        deals.getJSONObject(i).getString("highlightsHtml"),
+                        deals.getJSONObject(i).getString("pitchHtml"),
+                        deals.getJSONObject(i).getString("dealUrl")));
+
+            }
+            return new ModelAndView("groupon","group",group);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }
