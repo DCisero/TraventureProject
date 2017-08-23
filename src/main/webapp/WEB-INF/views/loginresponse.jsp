@@ -8,6 +8,7 @@
 
 <p1>Thank you for submitting your info, ${FirstName}!</p1> <br>
 
+<a href="profileform">Please fill out your profile! </a>
 
 </body>
 </html>

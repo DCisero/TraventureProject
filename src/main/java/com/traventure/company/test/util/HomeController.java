@@ -107,6 +107,57 @@ public class HomeController {
         return mv;
     }
 
+    @RequestMapping("/loginresponse")
+    public ModelAndView success(
+            @RequestParam("name") String name,
+            @RequestParam("email") String email)
+
+    {
+        boolean result = DAO.addUsersG(name, email);
+
+        if (result == false) {
+
+            return new ModelAndView("error", "errmsg", "customer add failed");
+        }
+
+        {
+            ModelAndView mv = new ModelAndView("loginresponse");
+            mv.addObject("name", name);
+            mv.addObject("email", email);
+            return mv;
+        }
+
+    }
+    @RequestMapping("/checklogin")
+    public ModelAndView checklogin(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password) {
+
+        boolean result = DAO.userlogin(email, password);
+        if (result == false) {
+            return new ModelAndView("error", "errmsg", "Adding user failed!");
+        }
+        return new ModelAndView("userView");
+    }
+
+    @RequestMapping("/existinguserlogin")
+    public ModelAndView existinguserlogin() {
+
+        return new ModelAndView("existinguserlogin");
+    }
+
+    @RequestMapping("/findmatch")
+    public ModelAndView findmatch() {
+
+        return new ModelAndView("findmatch");
+    }
+
+    @RequestMapping("/about")
+    public ModelAndView about() {
+
+        return new ModelAndView("about");
+    }
+
     @RequestMapping ("/groupon")
     public ModelAndView groupon(){
         try {

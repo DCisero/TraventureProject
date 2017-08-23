@@ -40,6 +40,7 @@ import java.util.ArrayList;
 
                 return true;
             }
+
             catch(Exception ex)
             {
                 ex.printStackTrace();
@@ -92,6 +93,65 @@ import java.util.ArrayList;
             }
             catch(Exception ex)
             {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        public static boolean addUsersG(
+                String name,
+                String email
+        ) {
+
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+
+                Connection mysqlConnection;
+                mysqlConnection = DriverManager.getConnection(
+                        DBCredentials.DB_ADDRESS,
+                        DBCredentials.USERNAME,
+                        DBCredentials.PASSWORD);
+
+                String addUsersGCommand = "INSERT INTO userlogin " +
+                        "(FirstName, Email) " +
+                        "VALUES ('" +
+                        name + "', '" +
+                        email + "')";
+
+                System.out.println("SQL Query " + addUsersGCommand);
+                Statement st = mysqlConnection.createStatement();
+                int result = st.executeUpdate(addUsersGCommand);
+
+                //if (result == 1)
+                return true;
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        public static boolean userlogin(
+                String email,
+                String password
+        )
+
+        {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+
+                Connection mysqlConnection;
+                mysqlConnection = DriverManager.getConnection(
+                        DBCredentials.DB_ADDRESS,
+                        DBCredentials.USERNAME,
+                        DBCredentials.PASSWORD);
+
+                String readuserloginCommand = "select * FROM userlogin WHERE email =('" + email  + "')";
+                System.out.println("SQL Query " + "userlogin");
+                Statement st = mysqlConnection.createStatement();
+                ResultSet result = st.executeQuery(readuserloginCommand);
+                return true;
+            }   catch (Exception ex) {
                 ex.printStackTrace();
                 return false;
             }
