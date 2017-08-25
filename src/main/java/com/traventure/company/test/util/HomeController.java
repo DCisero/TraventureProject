@@ -8,7 +8,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.json.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+import javax.jws.WebResult;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -92,7 +92,7 @@ public class HomeController {
         }
 
 
-        ModelAndView mv = new ModelAndView("profileresponse");
+        ModelAndView mv = new ModelAndView("userview");
         mv.addObject("UserName",UserName);
         mv.addObject("Profession",Profession);
         mv.addObject("Birthday",Birthday);
@@ -108,7 +108,7 @@ public class HomeController {
     }
 
     @RequestMapping("/loginresponse")
-    public ModelAndView success(
+    public ModelAndView loginresponse (
             @RequestParam("name") String name,
             @RequestParam("email") String email)
 
@@ -137,7 +137,7 @@ public class HomeController {
         if (result == false) {
             return new ModelAndView("error", "errmsg", "Adding user failed!");
         }
-        return new ModelAndView("userView");
+        return new ModelAndView("userview");
     }
 
     @RequestMapping("/existinguserlogin")
@@ -156,6 +156,12 @@ public class HomeController {
     public ModelAndView about() {
 
         return new ModelAndView("about");
+    }
+
+    @RequestMapping("/googleplaces")
+    public ModelAndView googleplaces() {
+
+        return new ModelAndView("googleplaces");
     }
 
     @RequestMapping ("/groupon")
@@ -207,6 +213,22 @@ public class HomeController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @RequestMapping("/match")
+    public ModelAndView match(@RequestParam("username") String UserName,
+    @RequestParam("destination") String DesiredDestination)
+    {
+
+        ArrayList<UserMatch> matches = DAO.Matches(UserName, DesiredDestination);
+
+
+        //return new ModelAndView("match","result",matches);
+        ModelAndView mv = new ModelAndView("match", "matches", matches);
+        mv.addObject("UserName", UserName);
+        mv.addObject("DesiredDestination", DesiredDestination);
+
+        return mv;
     }
 
 

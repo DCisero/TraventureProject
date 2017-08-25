@@ -6,7 +6,9 @@
 </head>
 <body>
 
-<p1>This is where we talk about our team </p1>
+<h1>TraVenture Team </h1>
+
+<p1>This is where we talk about our team/pictures </p1>
 
 </body>
 </html>

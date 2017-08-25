@@ -3,12 +3,96 @@
 <html>
 <head>
     <title>Profile Form</title>
+
+    <script language="JavaScript">
+        function validate2() {
+            return validate2UserName() && validate2Birthday() && validate2City()
+                && validate2State() && validate2Interests();
+        }
+        function validate2UserName(){
+
+            var user = document.profile.UserName.value;
+            var valid = true;
+
+            if (user === null || user === "") {
+                alert("User Name cannot be blank, please try again!");
+                valid = false;
+            }
+
+            if (valid) {
+                alert("User Name validation passed!");
+            }
+            return valid;
+        }
+
+        function validate2Birthday(){
+
+            var birth = document.profile.Birthday.value;
+            var valid = true;
+
+            if (birth === null || birth === "") {
+                alert("Please enter your birthday");
+                valid = false;
+            }
+
+            if (valid) {
+            }
+            return valid;
+        }
+
+        function validate2City(){
+
+            var cit = document.profile.City.value;
+            var valid = true;
+
+            if (cit === null || cit === "") {
+                alert("Please enter your city");
+                valid = false;
+            }
+
+            if (valid) {
+            }
+            return valid;
+        }
+
+        function validate2State(){
+
+            var st = document.profile.State.value;
+            var valid = true;
+
+            if (st === null || st === "") {
+                alert("Please enter your state");
+                valid = false;
+            }
+
+            if (valid) {
+            }
+            return valid;
+        }
+
+        function validate2Interests(){
+
+            var int = document.profile.Interests.value;
+            var valid = true;
+
+            if (int === null || int === "") {
+                alert("Please enter your interests");
+                valid = false;
+            }
+
+            if (valid) {
+            }
+            return valid;
+        }
+    </script>
+
+
 </head>
 <body>
 
 <p>Please fill out your profile:</p>
 
-<form action="addUser2" method="post">
+<form id="profile" name="profile" action="addUser2" method="post">
 User Name: <input type="text" name="UserName" maxlength="10"><br/>
 
 Profession: <select name="Profession">
@@ -35,11 +119,11 @@ City: <input type="text" name="City" maxlength="20"><br/>
 State: <input type="text" name="State" maxlength="20"><br/>
 
 Desired Destination: <select name="DesiredDestination">
-        <option value="StayCation">Staycation</option>
-        <option value="Vaction">Vacation</option>
+        <option value="Staycation">Staycation</option>
+        <option value="Vacation">Vacation</option>
     </select><br/>
 
-Interests: <input type="text" name="Interests" maxlength="40"><br/>
+Interests: <input type="text" name="Interests" maxlength="20"><br/>
 
 Smoker: <select name="Smoker">
         <option value="Never">Never</option>
@@ -55,7 +139,7 @@ Drinker: <select name="Drinker">
         <option value="Always">Always</option>
     </select><br/>
 
-    <input type="submit" name="submit" value="Submit Profile">
+    <input type="submit" name="submit" onclick="return validate2()" value="Submit Profile">
 </form>
 
 </body>

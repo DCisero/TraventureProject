@@ -23,6 +23,7 @@ public class UserProfile {
         Interests = "";
         Smoker = "";
         Drinker = "";
+
     }
 
     public UserProfile(String userName, String profession, int birthday, String gender, String city,
@@ -38,6 +39,7 @@ public class UserProfile {
         Interests = interests;
         Smoker = smoker;
         Drinker = drinker;
+
     }
 
     public String getUserName() {
@@ -139,4 +141,5 @@ public class UserProfile {
 
         Drinker = drinker;
     }
+
 }

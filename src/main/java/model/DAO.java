@@ -1,20 +1,24 @@
 package model;
+import com.mysql.jdbc.PreparedStatement;
+import com.traventure.company.test.util.UserMatch;
+import com.traventure.company.test.util.UserProfile;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 
     public class DAO {
 
 
-        public static boolean addUsers (
+        public static boolean addUsers(
                 String FirstName,
                 String LastName,
                 String Email,
-                String Password)
-        {
+                String Password) {
 
             try {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -39,16 +43,13 @@ import java.util.ArrayList;
                 int results = st.executeUpdate(addUsersCommand);
 
                 return true;
-            }
-
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 return false;
             }
         }
 
-        public static boolean addUsers2 (
+        public static boolean addUsers2(
                 String UserName,
                 String Profession,
                 int Birthday,
@@ -58,8 +59,7 @@ import java.util.ArrayList;
                 String DesiredDestination,
                 String Interests,
                 String Smoker,
-                String Drinker)
-        {
+                String Drinker) {
 
             try {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -90,9 +90,7 @@ import java.util.ArrayList;
                 int results = st.executeUpdate(addUsers2Command);
 
                 return true;
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 return false;
             }
@@ -146,14 +144,55 @@ import java.util.ArrayList;
                         DBCredentials.USERNAME,
                         DBCredentials.PASSWORD);
 
-                String readuserloginCommand = "select * FROM userlogin WHERE email =('" + email  + "')";
+                String readuserloginCommand = "select * FROM userlogin WHERE email =('" + email + "')";
                 System.out.println("SQL Query " + "userlogin");
                 Statement st = mysqlConnection.createStatement();
                 ResultSet result = st.executeQuery(readuserloginCommand);
                 return true;
-            }   catch (Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 return false;
             }
         }
-}
+
+
+        public static ArrayList<UserMatch> Matches(String UserName, String DesiredDestination) {
+
+
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                // below is static
+                //DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+                Connection mysqlConnection;
+                mysqlConnection = DriverManager.getConnection(
+                        DBCredentials.DB_ADDRESS,
+                        DBCredentials.USERNAME,
+                        DBCredentials.PASSWORD);
+
+                String sql = ("SELECT UserName, DesiredDestination FROM userprofile WHERE DesiredDestination = ?");
+
+                PreparedStatement ps = (PreparedStatement) mysqlConnection.prepareStatement(sql);
+                ps.setString(1, DesiredDestination);
+
+                ResultSet result = ps.executeQuery();
+
+                ArrayList<UserMatch> list = new ArrayList<UserMatch>();
+                while (result.next()) {
+                    UserMatch temp = new UserMatch(result.getString("UserName"), result.getString("DesiredDestination"));
+                    list.add(temp);
+                    // extract data from that row
+//                    String name = result.getString("UserName");
+//                    System.out.println("SQL Query" + UserName);
+                }
+
+
+
+                return list;
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return null;
+            }
+        }
+    }
+

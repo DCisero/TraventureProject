@@ -7,15 +7,15 @@
 </head>
 <body>
 
-<h1>Vacation Deals</h1>
+<h1>Traventure Vactaion Deals</h1>
 
 <c:forEach var="deal" items="${group}">
-
-            <li>${deal.title} </li> <br/>
-            <li>${deal.aTitle} </li>
+        <ul>
+            <li>${deal.pitchHtml} </li><br/>
             <li>${deal.highlightsHtml} </li>
-            <li>${deal.pitchHtml} </li>
-            <li>${deal.url}</li>
+            <li>${deal.title} </li>
+            <li>${deal.aTitle} </li>
+            <a href="https://www.groupon.com/deals/"> <li>${deal.url}</li> </a>
         </ul>
     </c:forEach>
 

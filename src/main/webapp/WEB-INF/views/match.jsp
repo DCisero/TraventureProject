@@ -1,17 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <html>
 <head>
-    <title>Customer View</title>
+    <title>Match</title>
 </head>
-
 <body>
 
-<p1>Hi! You finally made it here </p1>
+<c:forEach items="${matches}" var="match">
+${match.userName} - ${match.desiredDestination} <br />
+</c:forEach>
 
-<a href="profileform">Your profile </a>
-<a href="findmatch">Find Match </a>
+
 
 </body>
 </html>
