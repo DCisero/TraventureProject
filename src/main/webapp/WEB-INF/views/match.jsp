@@ -7,7 +7,7 @@
 <body>
 
 <c:forEach items="${matches}" var="match">
-${match.userName} - ${match.desiredDestination} <br />
+    ${match.userName} - ${match.desiredDestination} - ${match.smoker} - ${match.drinker} <br />
 </c:forEach>
 
 

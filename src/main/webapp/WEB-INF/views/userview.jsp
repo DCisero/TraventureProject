@@ -9,28 +9,20 @@
 <body>
 
 <h1>Welcome! </h1> <br/>
-<p>
-    ${sessionScope.username}, you are now ${sessionScope.loginStatus}.
-</p>
 
 (profile pic)
 
 <p>Name: ${UserName}</p>
 <p>Gender: ${Gender}</p>
-<p>Profession: ${sessionScope.profession}</p>
+<p>Profession: ${Profession}</p>
 <p>Interests:${Interests}</p>
 <p>Desired Destination:${DesiredDestination}</p>
 <p>Smoker: ${Smoker} </p>
 <p>Drinker: ${Drinker}</p>
 
-<a href="/match?username=${UserName}&destination=${DesiredDestination}">Find Match </a> <br/>
+<a href="/match?username=${UserName}&desiredDestination=${DesiredDestination}&smoker=${Smoker}&drinker=${Drinker}">Find Match </a> <br/>
 
 <a href="/googleplaces">Search Google Places</a>
-
-
-<c:forEach items="${userlogin}" var="userlogin">
-    ${userlogin.email} - ${userlogin.password} <br />
-</c:forEach>
 
 
 </body>
