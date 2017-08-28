@@ -1,65 +1,54 @@
 package com.traventure.company.test.util;
 
 public class GooglePlaces {
-    private String name;
-    private String address;
-    private String phoneNumber;
-    private String lat;
-    private String lng;
+    private String PlaceName;
+    private String PlaceAddress;
+    private String Title;
+
 
 
     public GooglePlaces() {
-        name = "";
-        address = "";
-        phoneNumber = "";
-        lat= "";
-        lng = "";
+        PlaceName = "";
+        PlaceAddress = "";
+        Title = "";
+
     }
 
-    public GooglePlaces(String name, String address, String phoneNumber, String lat, String lng) {
-        this.name = name;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.lat = lat;
-        this.lng = lng;
-    }
+    public GooglePlaces(String PlaceName, String PlaceAddress, String phoneNumber) {
+        this.PlaceName = PlaceName;
+        this.PlaceAddress = PlaceAddress;
+        this.Title = phoneNumber;
 
-
-    public String getname() {
-        return name;
-    }
-
-    public void setname(String name) {
-        this.name = name;
     }
 
 
-    public String getaddress() {
-        return address;
+    public String getPlaceName() {
+        return PlaceName;
     }
 
-    public void setaaddress(String address) {
-        this.address = address;
-    }
-
-
-    public String getphoneNumberl() {
-        return phoneNumber;
-    }
-
-    public void setphoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPlaceName(String PlaceName) {
+        this.PlaceName = PlaceName;
     }
 
 
-    public String getlat() {return lat;}
+    public String getPlaceAddress() {
+        return PlaceAddress;
+    }
 
-    public void setlat(String lat) {this.lat = lat;}
+    public void setPlaceAddress(String PlaceAddress) {
+        this.PlaceAddress = PlaceAddress;
+    }
 
 
-    public String getlng() {return lng;}
+    public String getTitle() {
+        return Title;
+    }
 
-    public void setlng(String lng) {this.lng = lng;}
+    public void setTitle(String Title) {
+        this.Title = Title;
+    }
+
+
 
 
 }
