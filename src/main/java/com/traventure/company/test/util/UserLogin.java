@@ -6,7 +6,7 @@ public class UserLogin {
     private String Email;
     private String Password;
 
-    public UserLogin() {
+    public UserLogin(String string, String resultString) {
         FirstName = "";
         LastName = "";
         Email = "";

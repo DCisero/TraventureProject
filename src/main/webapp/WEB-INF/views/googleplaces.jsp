@@ -105,10 +105,20 @@
     </div>
 </div>
 <div id="map"></div>
+
+<div>
+
 <div id="infowindow-content">
-    <img src="" width="16" height="16" id="place-icon">
-    <span id="place-name"  class="title"></span><br>
-    <span id="place-address"></span>
+    <form id="place" name="place" action="addplace" method="post">
+        <img src="" width="16" height="16" id="place-icon">
+        <span id="place-name"  class="title"></span><br>
+        <span id="place-address"></span>
+        <input type="hidden" name="place-name"/>
+        <input type="hidden" name="title"/>
+        <input type="hidden" name="place-address"/>
+        <button type="submit" value="Submit">Save</button>
+    </form>
+</div>
 </div>
 
 <script>
@@ -172,9 +182,13 @@
                 ].join(' ');
             }
 
-            infowindowContent.children['place-icon'].src = place.icon;
-            infowindowContent.children['place-name'].textContent = place.name;
-            infowindowContent.children['place-address'].textContent = address;
+            window.infowindowContent = infowindowContent;
+            infowindowContent.children[0].children['place-icon'].src = place.icon;
+            infowindowContent.children[0].children['place-name'].textContent = place.name;
+            infowindowContent.children[0].children['place-address'].textContent = address;
+
+            infowindowContent.children[0].children['title'].value = place.name;
+            infowindowContent.children[0].children['place-address'].value = address;
             infowindow.open(map, marker);
         });
 
