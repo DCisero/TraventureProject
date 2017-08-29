@@ -38,7 +38,13 @@ public class HomeController {
 
 
     @RequestMapping(value = "/addUser")
-    public ModelAndView addUser(@RequestParam("FirstName") String FirstName, @RequestParam("LastName") String LastName, @RequestParam("Email") String Email, @RequestParam("Password") String Password) {
+
+    public ModelAndView addUser(
+            @RequestParam("FirstName") String FirstName,
+            @RequestParam("LastName") String LastName,
+            @RequestParam("Email") String Email,
+            @RequestParam("Password") String Password, HttpSession session) {
+
 
 
         boolean result = DAO.addUsers(FirstName, LastName, Email, Password);
@@ -47,6 +53,9 @@ public class HomeController {
 
             return new ModelAndView("error", "errmsg", "Adding user failed!");
         }
+
+        session.setAttribute("FirstName", FirstName);
+        session.setAttribute("loginStatus", "logged in");
 
 
         ModelAndView mv = new ModelAndView("loginresponse");
@@ -76,8 +85,7 @@ public class HomeController {
             @RequestParam("Interests") String Interests,
             @RequestParam("Smoker") String Smoker,
             @RequestParam("Drinker") String Drinker,
-            @RequestParam("Image") String Image)
-    {
+            @RequestParam("Image") String Image, HttpSession session) throws SQLException {
 
 
         boolean result = DAO.addUsers2(UserName,Profession,Birthday,Gender,City,State,DesiredDestination,Interests,Smoker,Drinker,Image+"nth/0/");
@@ -86,23 +94,24 @@ public class HomeController {
             return new ModelAndView("error", "ermsg", "Adding profile failed!");
         }
 
-
         ModelAndView mv = new ModelAndView("userview");
+        session.setAttribute("UserName", UserName);
+        session.setAttribute("Profession", Profession);
+        session.setAttribute("Birthday", Birthday);
+        session.setAttribute("Gender", Gender);
+        session.setAttribute("City", City);
+        session.setAttribute("State", State);
+        session.setAttribute("DesiredDestination", DesiredDestination);
+        session.setAttribute("Interests", Interests);
+        session.setAttribute("Smoker", Smoker);
+        session.setAttribute("Drinker", Drinker);
 
-        mv.addObject("UserName",UserName);
-        mv.addObject("Profession",Profession);
-        mv.addObject("Birthday",Birthday);
-        mv.addObject("Gender",Gender);
-        mv.addObject("City",City);
-        mv.addObject("State",State);
-        mv.addObject("DesiredDestination",DesiredDestination);
-        mv.addObject("Interests",Interests);
-        mv.addObject("Smoker",Smoker);
-        mv.addObject("Drinker",Drinker);
-        mv.addObject("Image",Image);
 
-        return mv;
+        return new ModelAndView("userview");
     }
+
+
+
 
     @RequestMapping("/loginresponse")
     public ModelAndView loginresponse(@RequestParam("name") String name, @RequestParam("email") String email)
@@ -124,15 +133,7 @@ public class HomeController {
 
     }
 
-    @RequestMapping("/checklogin")
-    public ModelAndView checklogin(@RequestParam("email") String email, @RequestParam("password") String password) {
 
-        boolean result = DAO.userlogin(email, password);
-        if (result == false) {
-            return new ModelAndView("emailpassworderror", "emailpassworderror", "Adding user failed!");
-        }
-        return new ModelAndView("userview");
-    }
 
 
 
@@ -146,8 +147,46 @@ public class HomeController {
         session.setAttribute("loginStatus", "logged in");
         session.setAttribute("username", name);
 
+        //copy and paste code to retrieve prefs and set in sessions
+
         return new ModelAndView("userview");
     }
+
+
+
+
+
+    @RequestMapping("/checklogin")
+    public ModelAndView checklogin(
+            @RequestParam("username") String username,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            HttpSession session) throws SQLException {
+
+        boolean result = DAO.checkLogin(email, password);
+        System.out.println("password is correct");
+
+        if (result == false) {
+            return new ModelAndView("emailandorpasswordincorrect", "emailandorpasswordincorrect", "Adding user failed!");
+        }
+
+        UserPreferences prefs = fetchingpreferences(username);
+        System.out.println("Retrieved user prefs");
+        System.out.println("Username: " + prefs.getUserName());
+        System.out.println("Drinking: " + prefs.getDrinker());
+
+        //add these to the session not the model
+        session.setAttribute("UserName", prefs.getUserName());
+        session.setAttribute("Gender", prefs.getProfession());
+        session.setAttribute("Profession", prefs.getProfession());
+        session.setAttribute("Interests", prefs.getInterests());
+        session.setAttribute("DesiredDestination", prefs.getDesiredDestination());
+        session.setAttribute("Smoker", prefs.getSmoker());
+        session.setAttribute("Drinker", prefs.getDrinker());
+
+        return new ModelAndView("userview");
+    }
+
 
 
     @RequestMapping("/existinguserlogin")
@@ -178,7 +217,14 @@ public class HomeController {
     @RequestMapping("/userview")
     public ModelAndView userview() {
 
-        return new ModelAndView("userview");
+            return new ModelAndView("userview");
+        }
+
+    @RequestMapping("/savedgoogleplaces")
+    public ModelAndView savedgoogleplaces() {
+
+        return new ModelAndView("savedgoogleplaces");
+
     }
 
 
@@ -283,13 +329,13 @@ public class HomeController {
             System.out.println("Canceled");
         }
 
-        //System.exit(0);
 
         return new ModelAndView("matchresponse", "JOptionPane", "Match message");
     }
 
+
     @RequestMapping(value = "/addplace")
-    public ModelAndView savedplaces
+    public ModelAndView savedgoogleplaces
             (@RequestParam("title") String Title)
     {
 
@@ -300,7 +346,7 @@ public class HomeController {
             return new ModelAndView("error", "ermsg", "Adding profile failed!");
         }
 
-        ModelAndView mv = new ModelAndView("addplace");
+        ModelAndView mv = new ModelAndView("savedgoogleplaces");
         mv.addObject("Title", Title);
 
         return mv;
@@ -308,18 +354,17 @@ public class HomeController {
     }
 
     @RequestMapping("/savedplaces")
+
     public ModelAndView places(@RequestParam("Title") String Title)
     {
 
         ArrayList<SavedPlaces> savedPlaces= DAO.SavedPlaces(Title);
-
-        ModelAndView mv = new ModelAndView("/addplace", "SavedPlaces", savedPlaces);
-        mv.addObject("Title", Title);
-        System.out.println(Title);
-
+        ModelAndView mv = new ModelAndView("/savedgoogleplaces", "SavedPlaces", savedPlaces);
+        mv.addObject("title", Title);
 
         return mv;
     }
+
 
     @RequestMapping("/addDeal")
     public ModelAndView addDeal ()
@@ -381,6 +426,16 @@ public class HomeController {
 
         return mv;
     }
+
+    public UserPreferences fetchingpreferences(String UserName) {
+        ArrayList<UserPreferences> list = DAO.Preferences(UserName);
+        UserPreferences prefs = list.get(0);
+
+        return prefs;
+    }
+
+
+
 
     @RequestMapping("/Profiles")
     public ModelAndView Profiles (@RequestParam ("UserID") int UserID) {

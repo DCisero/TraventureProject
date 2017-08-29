@@ -4,7 +4,8 @@ import com.traventure.company.test.util.MatchProfile;
 import com.traventure.company.test.util.SavedPlaces;
 import com.traventure.company.test.util.UserMatch;
 import com.traventure.company.test.util.UserProfile;
-
+import com.traventure.company.test.util.UserPreferences;
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -161,7 +162,7 @@ public class DAO {
 
     public static boolean checkLogin(String email, String password)
             throws SQLException {
-        System.out.println("THE EXCEPTION HAS BEEN THROWN");
+        System.out.println("DAO.CHECKLOGIN has been called");
 
         Connection connection = null; //manages connection
         PreparedStatement pt = null; //manages prepared statement
@@ -368,6 +369,53 @@ public class DAO {
         }
 
     }
+
+
+    //here is the method that brings the persons preferences back from the database
+    public static ArrayList<UserPreferences> Preferences(String UserName) {
+
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection mysqlConnection;
+            mysqlConnection = DriverManager.getConnection(
+                    DBCredentials.DB_ADDRESS,
+                    DBCredentials.USERNAME,
+                    DBCredentials.PASSWORD);
+
+            String sql = ("SELECT UserName, Gender, Profession, Interests, DesiredDestination, Smoker, Drinker FROM userprofile WHERE UserName = ?");
+
+            PreparedStatement ps = (PreparedStatement) mysqlConnection.prepareStatement(sql);
+            ps.setString(1, UserName);
+
+            ResultSet result = ps.executeQuery();
+
+            ArrayList<UserPreferences> list = new ArrayList<UserPreferences>();
+            while (result.next()) {
+                UserPreferences temp = new UserPreferences(
+                        result.getString("UserName"),
+                        result.getString("Gender"),
+                        result.getString("Profession"),
+                        result.getString("Interests"),
+                        result.getString("DesiredDestination"),
+                        result.getString("Smoker"),
+                        result.getString("Drinker"));
+                list.add(temp);
+            }
+
+            return list;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+
+
+
 
     public static ArrayList<MatchProfile> Profiles(int UserID) {
 

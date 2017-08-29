@@ -11,17 +11,26 @@
 
 <h1>Welcome! </h1> <br/>
 
+<p>
+    ${sessionScope.username}${sessionScope.FirstName}, you are now ${sessionScope.loginStatus}.
+</p>
+
+
 <img src="${Image}nth/0/"> <br />
 
-<p>Name: ${UserName}</p>
-<p>Gender: ${Gender}</p>
-<p>Profession: ${Profession}</p>
-<p>Interests:${Interests}</p>
-<p>Desired Destination:${DesiredDestination}</p>
-<p>Smoker: ${Smoker} </p>
-<p>Drinker: ${Drinker}</p>
+
+<p>Name: ${sessionScope.UserName}</p>
+<p>Gender: ${sessionScope.Gender}</p>
+<p>Profession: ${sessionScope.Profession}</p>
+<p>Interests:${sessionScope.Interests}</p>
+<p>Desired Destination:${sessionScope.DesiredDestination}</p>
+<p>Smoker: ${sessionScope.Smoker} </p>
+<p>Drinker: ${sessionScope.Drinker}</p>
 
 <a href="/match?username=${UserName}&desiredDestination=${DesiredDestination}&smoker=${Smoker}&drinker=${Drinker}">Find Match </a> <br/>
+
+
+<a href="/savedgoogleplaces"> Saved Places </a> <br>
 
  <a href="googleplaces">Search Staycation Destinations</a><br/>
 

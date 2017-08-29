@@ -84,7 +84,8 @@
 
 <h1>Login:</h1>
 
-<form id="userlogin" name="userlogin" action="checklogin" method="post">
+<form id="userlogin" name="userlogin" action="/checklogin" method="post">
+    User Name:<input type="text" name="username" maxlength="50"><br/>
     Email: <input type="text" name="email" maxlength="25" placeholder="name@email.com"><br/>
     Password: <input type="password" name="password" maxlength="30"><br/>
 
