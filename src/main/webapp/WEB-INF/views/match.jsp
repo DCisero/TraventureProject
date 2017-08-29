@@ -25,6 +25,7 @@
 
 <form action="Profiles" method="post" >
     <input type="submit" value="View Profile">
+    <input type="hidden" name="Userid" value="${UserID}">
 </form>
 
 </body>

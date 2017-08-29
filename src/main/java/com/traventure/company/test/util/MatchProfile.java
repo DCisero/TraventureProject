@@ -10,8 +10,16 @@ public class MatchProfile {
     private String Smoker;
     private String Drinker;
 
-
-
+    public MatchProfile() {
+        UserID = 0;
+        UserName = "";
+        Gender = "";
+        Profession = "";
+        Interests = "";
+        DesiredDestination = "";
+        Smoker = "";
+        Drinker = "";
+    }
     public MatchProfile(int userID, String userName, String gender, String profession, String interests,
                         String desiredDestination, String smoker, String drinker) {
         UserID = userID;
