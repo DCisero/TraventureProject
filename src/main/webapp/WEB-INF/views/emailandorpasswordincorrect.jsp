@@ -2,14 +2,14 @@
 
 <html>
 <head>
-    <title>Find Match</title>
+    <title>Error Page</title>
     <link rel="stylesheet" href="/resources/styles.css">
 </head>
 <body>
 
-<h1>Match</h1>
+<h1>Incorrect email and/or password. </h1>
+<p1>Please try again. </p1><a href="/existinguserlogin"> User Login </a> <br>
 
-<p1>This is where we will generate potential matches that you get to say "yes" or "no" </p1>
 
 </body>
 </html>

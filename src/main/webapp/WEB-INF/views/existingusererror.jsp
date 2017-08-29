@@ -7,10 +7,10 @@
 </head>
 <body>
 
-<h1>Your email is already registered with TraVenture. </h1>
+<h1>Your email is already registered with Traventure. </h1>
 <p1>Please login. </p1>
-<a href="existinguserlogin"> User Login </a> <br>
-
+<a href="/existinguserlogin"> User Login </a> <br>
 
 </body>
 </html>
+

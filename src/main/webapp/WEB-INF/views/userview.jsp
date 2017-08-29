@@ -21,7 +21,6 @@
 <p>Smoker: ${Smoker} </p>
 <p>Drinker: ${Drinker}</p>
 
-
 <a href="/match?username=${UserName}&desiredDestination=${DesiredDestination}&smoker=${Smoker}&drinker=${Drinker}">Find Match </a> <br/>
 
  <a href="googleplaces">Search Staycation Destinations</a><br/>

@@ -17,8 +17,7 @@
 <form action="addMatch" method="post">
 <c:forEach items="${matches}" var="match">
     <c:if test="${UserName.equals(match.userName) == false}">
-
-    <td> <input type="submit" value="Submit Match"></td> ${match.userName} - ${match.desiredDestination} - ${match.smoker} - ${match.drinker} <br />
+    <td> <input type="submit" value="Submit Match"></td> ${match.userName} : ${match.desiredDestination}, ${match.smoker}, ${match.drinker} <br />
     </c:if>
 </c:forEach>
 </form>

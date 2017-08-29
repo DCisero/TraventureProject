@@ -10,6 +10,6 @@
 <h1>TRY AGAIN!</h1>
 Sorry, something went wrong. <br />
 
-<a href="welcome">TraVenture Home</a>
+<a href="welcome.jsp">TraVenture Home</a>
 </body>
 </html>

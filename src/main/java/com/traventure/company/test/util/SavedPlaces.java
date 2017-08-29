@@ -6,12 +6,10 @@ public class SavedPlaces {
 
 
     public SavedPlaces(String Title) {
-
         Title = Title;
     }
 
     public String getTitle() {
-
         return Title;
     }
 
@@ -19,8 +17,5 @@ public class SavedPlaces {
 
         Title = Title;
     }
-
-
-
 
 }

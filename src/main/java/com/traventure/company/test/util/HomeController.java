@@ -27,27 +27,21 @@ public class HomeController {
     @RequestMapping("/")
 
     public ModelAndView helloWorld() {
-        return new
-                ModelAndView("welcome","message","Hello World");
+        return new ModelAndView("welcome", "message", "Hello World");
     }
 
     @RequestMapping("/loginform")
-    public ModelAndView userform(){
+    public ModelAndView userform() {
 
-        return new ModelAndView("loginform","log","Login Information");
+        return new ModelAndView("loginform", "log", "Login Information");
     }
 
 
     @RequestMapping(value = "/addUser")
-    public ModelAndView addUser (
-            @RequestParam("FirstName") String FirstName,
-            @RequestParam("LastName") String LastName,
-            @RequestParam("Email") String Email,
-            @RequestParam("Password") String Password)
-    {
+    public ModelAndView addUser(@RequestParam("FirstName") String FirstName, @RequestParam("LastName") String LastName, @RequestParam("Email") String Email, @RequestParam("Password") String Password) {
 
 
-        boolean result = DAO.addUsers(FirstName,LastName,Email,Password);
+        boolean result = DAO.addUsers(FirstName, LastName, Email, Password);
 
         if (result == false) {
 
@@ -65,9 +59,9 @@ public class HomeController {
     }
 
     @RequestMapping("/profileform")
-    public ModelAndView profileform(){
+    public ModelAndView profileform() {
 
-        return new ModelAndView("profileform","profile","Profile Information");
+        return new ModelAndView("profileform", "profile", "Profile Information");
     }
 
     @RequestMapping(value = "/addUser2")
@@ -87,7 +81,6 @@ public class HomeController {
 
 
         boolean result = DAO.addUsers2(UserName,Profession,Birthday,Gender,City,State,DesiredDestination,Interests,Smoker,Drinker,Image+"nth/0/");
-
         if (result == false) {
 
             return new ModelAndView("error", "ermsg", "Adding profile failed!");
@@ -95,6 +88,7 @@ public class HomeController {
 
 
         ModelAndView mv = new ModelAndView("userview");
+
         mv.addObject("UserName",UserName);
         mv.addObject("Profession",Profession);
         mv.addObject("Birthday",Birthday);
@@ -111,9 +105,7 @@ public class HomeController {
     }
 
     @RequestMapping("/loginresponse")
-    public ModelAndView loginresponse (
-            @RequestParam("name") String name,
-            @RequestParam("email") String email)
+    public ModelAndView loginresponse(@RequestParam("name") String name, @RequestParam("email") String email)
 
     {
         boolean result = DAO.addUsersG(name, email);
@@ -131,10 +123,9 @@ public class HomeController {
         }
 
     }
+
     @RequestMapping("/checklogin")
-    public ModelAndView checklogin(
-            @RequestParam("email") String email,
-            @RequestParam("password") String password) {
+    public ModelAndView checklogin(@RequestParam("email") String email, @RequestParam("password") String password) {
 
         boolean result = DAO.userlogin(email, password);
         if (result == false) {
@@ -148,13 +139,6 @@ public class HomeController {
             @RequestParam("email") String email,
             @RequestParam("name") String name, HttpSession session) throws SQLException
     {
-
-
-        boolean result = DAO.checkGoogleLogin(email);
-
-        if (result == false) {
-            return new ModelAndView("emailandorpasswordincorrect", "emailandorpasswordincorrect", "Adding user failed!");
-        }
 
         session.setAttribute("loginStatus", "logged in");
         session.setAttribute("username", name);
@@ -187,23 +171,25 @@ public class HomeController {
         return new ModelAndView("googleplaces");
     }
 
+
     @RequestMapping("/userview")
     public ModelAndView userview() {
 
         return new ModelAndView("userview");
     }
 
-    @RequestMapping ("/groupon")
-    public ModelAndView groupon(){
+
+    @RequestMapping("/groupon")
+    public ModelAndView groupon() {
         try {
 
             HttpClient http = HttpClientBuilder.create().build();
 
-            HttpHost host = new HttpHost("partner-api.groupon.com", 80,"http");
+            HttpHost host = new HttpHost("partner-api.groupon.com", 80, "http");
 
             HttpGet getPage = new HttpGet("/deals.json?tsToken=US_AFF_0_201236_212556_0&channel_id=getaways&categories=Europe%2C%20Asia%2C%20Africa%2C%20%26%20Oceania&offset=0&limit=30");
 
-            HttpResponse resp = http.execute(host,getPage);
+            HttpResponse resp = http.execute(host, getPage);
 
             String jsonString = EntityUtils.toString(resp.getEntity());
 
@@ -227,18 +213,14 @@ public class HomeController {
             ArrayList<Groupon> group = new ArrayList<Groupon>();
 
             for (int i = 0; i < deals.length(); i++) {
-                group.add(new Groupon(deals.getJSONObject(i).getString("title"),
-                        deals.getJSONObject(i).getString("announcementTitle"),
-                        deals.getJSONObject(i).getString("highlightsHtml"),
-                        deals.getJSONObject(i).getString("pitchHtml"),
-                        deals.getJSONObject(i).getString("dealUrl")));
+                group.add(new Groupon(deals.getJSONObject(i).getString("title"), deals.getJSONObject(i).getString("announcementTitle"), deals.getJSONObject(i).getString("highlightsHtml"), deals.getJSONObject(i).getString("pitchHtml"), deals.getJSONObject(i).getString("dealUrl")));
 
             }
-            return new ModelAndView("groupon","group",group);
+            return new ModelAndView("groupon", "group", group);
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -381,7 +363,8 @@ public class HomeController {
     public ModelAndView match(@RequestParam("username") String UserName,
                               @RequestParam("desiredDestination") String desiredDestination,
                               @RequestParam("smoker") String Smoker,
-                              @RequestParam("drinker") String Drinker) {
+                              @RequestParam("drinker") String Drinker)
+    {
 
         ArrayList<UserMatch> matches = DAO.Matches(UserName, desiredDestination, Smoker, Drinker);
 

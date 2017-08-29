@@ -16,6 +16,7 @@ public class UserMatch {
 
 
     public UserMatch(String username, String desiredDestination, String smoker, String drinker) {
+
         UserName = username;
         DesiredDestination = desiredDestination;
         Smoker = smoker;
@@ -42,25 +43,12 @@ public class UserMatch {
         DesiredDestination = desiredDestination;
     }
 
+    public String getSmoker() { return Smoker; }
 
-    public String getSmoker() {
+    public void setSmoker(String smoker) { Smoker = smoker; }
 
-        return Smoker;
-    }
+    public String getDrinker() { return Drinker; }
 
-    public void setSmoker(String smoker) {
 
-        Smoker = smoker;
-    }
-
-    public String getDrinker() {
-
-        return Drinker;
-    }
-
-    public void setDrinker(String drinker) {
-
-        Drinker = drinker;
-    }
 
 }

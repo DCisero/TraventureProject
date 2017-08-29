@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>Saved Places</title>
+    <title>Add Place</title>
     <link rel="stylesheet" href="/resources/styles.css">
 </head>
 
@@ -15,3 +15,4 @@
 
 </body>
 </html>
+
