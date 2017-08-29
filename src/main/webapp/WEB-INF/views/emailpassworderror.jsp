@@ -2,14 +2,15 @@
 
 <html>
 <head>
-    <title>About Page</title>
+    <title>Error Page</title>
     <link rel="stylesheet" href="/resources/styles.css">
 </head>
 <body>
 
-<h1>TraVenture Team </h1>
+<h1>Incorrect email and/or password. </h1>
+<p1>Please try again. </p1>
+<a href="/existinguserlogin"> User Login </a> <br>
 
-<p1>This is where we talk about our team/pictures </p1>
 
 </body>
 </html>

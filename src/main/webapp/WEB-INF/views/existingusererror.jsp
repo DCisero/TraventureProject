@@ -7,9 +7,10 @@
 </head>
 <body>
 
-<h1>TRY AGAIN!</h1>
-Sorry, something went wrong. <br />
+<h1>Your email is already registered with TraVenture. </h1>
+<p1>Please login. </p1>
+<a href="existinguserlogin"> User Login </a> <br>
 
-<a href="welcome">TraVenture Home</a>
+
 </body>
 </html>

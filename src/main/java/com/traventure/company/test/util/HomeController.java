@@ -1,6 +1,5 @@
 package com.traventure.company.test.util;
 
-
 import model.DAO;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -15,10 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-import javax.jws.WebResult;
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.servlet.http.*;
 
 @Controller
 public class HomeController {
@@ -80,11 +81,12 @@ public class HomeController {
             @RequestParam("DesiredDestination") String DesiredDestination,
             @RequestParam("Interests") String Interests,
             @RequestParam("Smoker") String Smoker,
-            @RequestParam("Drinker") String Drinker)
+            @RequestParam("Drinker") String Drinker,
+            @RequestParam("Image") String Image)
     {
 
 
-        boolean result = DAO.addUsers2(UserName,Profession,Birthday,Gender,City,State,DesiredDestination,Interests,Smoker,Drinker);
+        boolean result = DAO.addUsers2(UserName,Profession,Birthday,Gender,City,State,DesiredDestination,Interests,Smoker,Drinker,Image+"nth/0/");
 
         if (result == false) {
 
@@ -103,6 +105,7 @@ public class HomeController {
         mv.addObject("Interests",Interests);
         mv.addObject("Smoker",Smoker);
         mv.addObject("Drinker",Drinker);
+        mv.addObject("Image",Image);
 
         return mv;
     }
@@ -135,10 +138,30 @@ public class HomeController {
 
         boolean result = DAO.userlogin(email, password);
         if (result == false) {
-            return new ModelAndView("error", "errmsg", "Adding user failed!");
+            return new ModelAndView("emailpassworderror", "emailpassworderror", "Adding user failed!");
         }
         return new ModelAndView("userview");
     }
+
+    @RequestMapping("/existinggooglelogin")
+    public ModelAndView existinguserlogin(
+            @RequestParam("email") String email,
+            @RequestParam("name") String name, HttpSession session) throws SQLException
+    {
+
+
+        boolean result = DAO.checkGoogleLogin(email);
+
+        if (result == false) {
+            return new ModelAndView("emailandorpasswordincorrect", "emailandorpasswordincorrect", "Adding user failed!");
+        }
+
+        session.setAttribute("loginStatus", "logged in");
+        session.setAttribute("username", name);
+
+        return new ModelAndView("userview");
+    }
+
 
     @RequestMapping("/existinguserlogin")
     public ModelAndView existinguserlogin() {
@@ -162,6 +185,12 @@ public class HomeController {
     public ModelAndView googleplaces() {
 
         return new ModelAndView("googleplaces");
+    }
+
+    @RequestMapping("/userview")
+    public ModelAndView userview() {
+
+        return new ModelAndView("userview");
     }
 
     @RequestMapping ("/groupon")
@@ -215,20 +244,166 @@ public class HomeController {
         return null;
     }
 
-    @RequestMapping("/match")
-    public ModelAndView match(@RequestParam("username") String UserName,
-    @RequestParam("destination") String DesiredDestination)
+    @RequestMapping(value = "/addMatch")
+    public ModelAndView addMatch2() {
+        Frame frame = new JFrame("Option Pane Text Area");
+
+        final SpringLayout layout = new SpringLayout();
+
+        final JPanel panel = new JPanel(layout);
+        panel.setPreferredSize(new Dimension(250, 160));
+
+        JLabel lblName = new JLabel("Name:");
+        panel.add(lblName);
+        JTextField txtName = new JTextField(10);
+        txtName.setBorder(BorderFactory.createLineBorder(Color.black));
+        panel.add(txtName);
+
+        JLabel lblMessage = new JLabel("Message:");
+        panel.add(lblMessage);
+        JTextArea txtMessage = new JTextArea();
+        txtMessage.setBorder(BorderFactory.createLineBorder(Color.black));
+        txtMessage.setLineWrap(true);
+        txtMessage.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(txtMessage,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setPreferredSize(new Dimension(300, 120));
+        panel.add(scrollPane);
+
+        layout.putConstraint(SpringLayout.WEST, lblName,
+                0,
+                SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, lblMessage,
+                10,
+                SpringLayout.SOUTH, lblName);
+
+
+        layout.putConstraint(SpringLayout.WEST, txtName,
+                25,
+                SpringLayout.EAST, lblName);
+        layout.putConstraint(SpringLayout.NORTH, scrollPane,
+                10,
+                SpringLayout.SOUTH, lblMessage);
+
+        int result = JOptionPane.showConfirmDialog(frame, panel,
+                "Match Messenger", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE); JOptionPane.showConfirmDialog( null, "Awesome your match has been notified!","Confirmation", JOptionPane.DEFAULT_OPTION);
+
+
+        if (result == JOptionPane.YES_OPTION) {
+            System.out
+                    .println(txtName.getText() + ",\n" + txtMessage.getText());
+        } else {
+            System.out.println("Canceled");
+        }
+
+        //System.exit(0);
+
+        return new ModelAndView("matchresponse", "JOptionPane", "Match message");
+    }
+
+    @RequestMapping(value = "/addplace")
+    public ModelAndView savedplaces
+            (@RequestParam("title") String Title)
     {
 
-        ArrayList<UserMatch> matches = DAO.Matches(UserName, DesiredDestination);
+        boolean result = DAO.addPlace(Title);
+
+        if (result == false) {
+
+            return new ModelAndView("error", "ermsg", "Adding profile failed!");
+        }
+
+        ModelAndView mv = new ModelAndView("addplace");
+        mv.addObject("Title", Title);
+
+        return mv;
+
+    }
+
+    @RequestMapping("/savedplaces")
+    public ModelAndView places(@RequestParam("Title") String Title)
+    {
+
+        ArrayList<SavedPlaces> savedPlaces= DAO.SavedPlaces(Title);
+
+        ModelAndView mv = new ModelAndView("/addplace", "SavedPlaces", savedPlaces);
+        mv.addObject("Title", Title);
+        System.out.println(Title);
+
+
+        return mv;
+    }
+
+    @RequestMapping("/addDeal")
+    public ModelAndView addDeal ()
+    {
+        try {
+
+            HttpClient http = HttpClientBuilder.create().build();
+
+            HttpHost host = new HttpHost("partner-api.groupon.com", 80, "http");
+
+            HttpGet getPage = new HttpGet("/deals.json?tsToken=US_AFF_0_201236_212556_0&channel_id=getaways&categories=Europe%2C%20Asia%2C%20Africa%2C%20%26%20Oceania&offset=0&limit=30");
+
+            HttpResponse resp = http.execute(host, getPage);
+
+            String jsonString = EntityUtils.toString(resp.getEntity());
+
+            JSONObject json = new JSONObject(jsonString);
+
+            //the int status will execute the success of the method or not(ex. local 404 error)
+            int status = resp.getStatusLine().getStatusCode();
+
+            JSONArray deals = json.getJSONArray("deals");
+
+            JSONArray pitch = json.getJSONArray("deals");
+
+            ArrayList<AddDeal> saveDeal = new ArrayList<AddDeal>();
+
+            for (int i = 0; i < deals.length(); i++) {
+                saveDeal.add(new AddDeal(deals.getJSONObject(i).getString("pitchHtml")));
+
+            }
+            return new ModelAndView("matchresponse", "saveDeal", saveDeal);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    @RequestMapping("/match")
+    public ModelAndView match(@RequestParam("username") String UserName,
+                              @RequestParam("desiredDestination") String desiredDestination,
+                              @RequestParam("smoker") String Smoker,
+                              @RequestParam("drinker") String Drinker) {
+
+        ArrayList<UserMatch> matches = DAO.Matches(UserName, desiredDestination, Smoker, Drinker);
 
 
         //return new ModelAndView("match","result",matches);
         ModelAndView mv = new ModelAndView("match", "matches", matches);
         mv.addObject("UserName", UserName);
-        mv.addObject("DesiredDestination", DesiredDestination);
+        mv.addObject("desiredDestination", desiredDestination);
+        mv.addObject("Smoker", Smoker);
+        mv.addObject("Drinker", Drinker);
 
         return mv;
+    }
+
+    @RequestMapping("/Profiles")
+    public ModelAndView Profiles (@RequestParam ("UserID") int UserID) {
+
+        ArrayList<MatchProfile> proList = DAO.Profiles(UserID);
+
+        return new ModelAndView("viewprofile", "proList", proList);
+        //mv.addObject("UserID", UserID);
+
     }
 
 

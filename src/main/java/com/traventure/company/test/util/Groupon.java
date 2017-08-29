@@ -5,7 +5,6 @@ public class Groupon {
     private String aTitle;
     private String highlightsHtml;
     private String pitchHtml;
-    //private String formattedAmount;
     private String url;
 
 
@@ -14,7 +13,6 @@ public class Groupon {
         aTitle = "";
         highlightsHtml = "";
         pitchHtml = "";
-        //formattedAmount = "";
         url = "";
     }
 
@@ -24,7 +22,6 @@ public class Groupon {
         this.aTitle = aTitle;
         this.highlightsHtml = highlightsHtml;
         this.pitchHtml = pitchHtml;
-        //this.formattedAmount = formattedAmount;
         this.url = url;
     }
 
@@ -60,15 +57,6 @@ public class Groupon {
     public void setPitchHtml(String pitchHtml) {
         this.pitchHtml = pitchHtml;
     }
-
-
-//   public String getFormattedAmount() {
-//        return formattedAmount;
-//    }
-//
-//   public void setFormattedAmount(String formattedAmount) {
-//       this.formattedAmount = formattedAmount;
-//    }
 
     public String getUrl() {
         return url;

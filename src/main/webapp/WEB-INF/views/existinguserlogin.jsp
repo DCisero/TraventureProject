@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Existing User Login</title>
+    <link rel="stylesheet" href="/resources/styles.css">
 
     <script language="JavaScript">
         function validate3() {
@@ -14,7 +15,6 @@
             var valid = true;
 
             if (email === null || email  === "") {
-                alert("Please enter your email");
                 valid = false;
             }
 
@@ -29,7 +29,6 @@
             var valid = true;
 
             if (pass === null || pass === "") {
-                alert("Please enter your password");
                 valid = false;
             }
 

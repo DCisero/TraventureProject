@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Profile Response</title>
+    <link rel="stylesheet" href="/resources/styles.css">
 </head>
 <body>
 

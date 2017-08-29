@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Profile Form</title>
+    <link rel="stylesheet" href="/resources/styles.css">
 
     <script language="JavaScript">
         function validate2() {
@@ -15,12 +16,12 @@
             var valid = true;
 
             if (user === null || user === "") {
-                alert("User Name cannot be blank, please try again!");
+               <!-- alert("User Name cannot be blank, please try again!");-->
                 valid = false;
             }
 
             if (valid) {
-                alert("User Name validation passed!");
+               <!-- alert("User Name validation passed!");-->
             }
             return valid;
         }
@@ -31,7 +32,6 @@
             var valid = true;
 
             if (birth === null || birth === "") {
-                alert("Please enter your birthday");
                 valid = false;
             }
 
@@ -46,7 +46,6 @@
             var valid = true;
 
             if (cit === null || cit === "") {
-                alert("Please enter your city");
                 valid = false;
             }
 
@@ -61,7 +60,6 @@
             var valid = true;
 
             if (st === null || st === "") {
-                alert("Please enter your state");
                 valid = false;
             }
 
@@ -76,7 +74,6 @@
             var valid = true;
 
             if (int === null || int === "") {
-                alert("Please enter your interests");
                 valid = false;
             }
 
@@ -86,6 +83,13 @@
         }
     </script>
 
+    <script>
+        UPLOADCARE_LOCALE = "en";
+        UPLOADCARE_TABS = "file gphotos";
+        UPLOADCARE_PUBLIC_KEY = "877ab06ecd65793fe640";
+
+    </script>
+    <script charset="utf-8" src="//ucarecdn.com/libs/widget/3.1.2/uploadcare.full.min.js"></script>
 
 </head>
 <body>
@@ -93,6 +97,26 @@
 <p>Please fill out your profile:</p>
 
 <form id="profile" name="profile" action="addUser2" method="post">
+    Profile Pic:
+    <input
+            type="hidden"
+            role="uploadcare-uploader"
+            name="Image"
+            data-public-key="877ab06ecd65793fe640"
+            data-tabs="file gphotos"
+            data-crop="300x200"
+            data-images-only="true"
+            data-image-shrink=""
+            data-images-only="false"
+            data-preview-step="false"
+            data-clearable="false"
+            data-multiple="true"
+            data-system-dialog="false"
+            data-multiple-min="1"
+            data-multiple-max="1"
+            data-crop=""
+    /> <br />
+
 User Name: <input type="text" name="UserName" maxlength="10"><br/>
 
 Profession: <select name="Profession">

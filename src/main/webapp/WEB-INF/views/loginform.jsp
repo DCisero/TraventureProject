@@ -18,7 +18,7 @@
             var valid = true;
 
             if (first === null || first === "") {
-                alert("First Name cannot be blank, please try again!");
+               <!-- alert("First Name cannot be blank, please try again!");-->
                 valid = false;
             }
 
@@ -33,7 +33,7 @@
             var valid = true;
 
             if (last === null || last === "") {
-                alert("Last Name cannot be blank, please try again!");
+                <!--alert("Last Name cannot be blank, please try again!");-->
                 valid = false;
             }
 
@@ -48,13 +48,13 @@
             var valid = true;
 
             if (email === null || email === "") {
-                alert("Email cannot be blank, please try again!");
+                <!--alert("Email cannot be blank, please try again!");-->
                 valid = false;
             }
             email = email.trim();
 
         if (valid) {
-         alert("Email validation passed!");
+         <!--alert("Email validation passed!");-->
         }
             return valid;
         }
@@ -65,12 +65,12 @@
             var valid = true;
 
             if (password === null || password === "") {
-                alert("Password cannot be blank, please try again!");
+               <!-- alert("Password cannot be blank, please try again!");-->
                 valid = false;
             }
 
       if (valid) {
-          alert("Password validation passed!");
+          <!--alert("Password validation passed!");-->
        }
             return valid;
         }

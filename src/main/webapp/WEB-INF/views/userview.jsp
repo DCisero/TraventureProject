@@ -3,14 +3,15 @@
 
 <html>
 <head>
-    <title>Customer View</title>
-
+    <title>User View</title>
+    <link rel="stylesheet" href="/resources/styles.css">
+</head>
 
 <body>
 
 <h1>Welcome! </h1> <br/>
 
-(profile pic)
+<img src="${Image}nth/0/"> <br />
 
 <p>Name: ${UserName}</p>
 <p>Gender: ${Gender}</p>
@@ -20,10 +21,12 @@
 <p>Smoker: ${Smoker} </p>
 <p>Drinker: ${Drinker}</p>
 
-<a href="/match?username=${UserName}&destination=${DesiredDestination}">Find Match </a> <br/>
 
-<a href="/googleplaces">Search Google Places</a>
+<a href="/match?username=${UserName}&desiredDestination=${DesiredDestination}&smoker=${Smoker}&drinker=${Drinker}">Find Match </a> <br/>
 
+ <a href="googleplaces">Search Staycation Destinations</a><br/>
+
+<a href="groupon">Search Vacation Deals</a>
 
 </body>
 </html>
