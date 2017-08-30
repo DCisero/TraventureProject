@@ -10,6 +10,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,7 +47,6 @@ public class HomeController {
             @RequestParam("Password") String Password, HttpSession session) {
 
 
-
         boolean result = DAO.addUsers(FirstName, LastName, Email, Password);
 
         if (result == false) {
@@ -74,7 +74,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/addUser2")
-    public ModelAndView addUser2 (
+    public ModelAndView addUser2(
             @RequestParam("UserName") String UserName,
             @RequestParam("Profession") String Profession,
             @RequestParam("Birthday") int Birthday,
@@ -85,10 +85,11 @@ public class HomeController {
             @RequestParam("Interests") String Interests,
             @RequestParam("Smoker") String Smoker,
             @RequestParam("Drinker") String Drinker,
-            @RequestParam("Image") String Image, HttpSession session) throws SQLException {
+            @RequestParam("Image") String Image,
+            @RequestParam("Email") String Email, HttpSession session) throws SQLException {
 
 
-        boolean result = DAO.addUsers2(UserName,Profession,Birthday,Gender,City,State,DesiredDestination,Interests,Smoker,Drinker,Image+"nth/0/");
+        boolean result = DAO.addUsers2(UserName, Profession, Birthday, Gender, City, State, DesiredDestination, Interests, Smoker, Drinker, Image + "nth/0/", Email);
         if (result == false) {
 
             return new ModelAndView("error", "ermsg", "Adding profile failed!");
@@ -105,12 +106,11 @@ public class HomeController {
         session.setAttribute("Interests", Interests);
         session.setAttribute("Smoker", Smoker);
         session.setAttribute("Drinker", Drinker);
+        session.setAttribute("Email", Email);
 
 
         return new ModelAndView("userview");
     }
-
-
 
 
     @RequestMapping("/loginresponse")
@@ -121,7 +121,7 @@ public class HomeController {
 
         if (result == false) {
 
-            return new ModelAndView("error", "errmsg", "customer add failed");
+            return new ModelAndView("error", "errmsg", "failed");
         }
 
         {
@@ -134,26 +134,42 @@ public class HomeController {
     }
 
 
-
-
-
-
     @RequestMapping("/existinggooglelogin")
     public ModelAndView existinguserlogin(
-            @RequestParam("email") String email,
-            @RequestParam("name") String name, HttpSession session) throws SQLException
-    {
+            @RequestParam("email") String Email,
+            @RequestParam("name") String name, HttpSession session) throws SQLException {
+        System.out.println("Here is the gmail:"+ Email);{
+            boolean result = DAO.checkGoogleLogin(Email);
 
-        session.setAttribute("loginStatus", "logged in");
-        session.setAttribute("username", name);
+            if (result == false) {
 
-        //copy and paste code to retrieve prefs and set in sessions
+                return new ModelAndView("error", "errmsg", "customer add failed");
+            }
 
-        return new ModelAndView("userview");
+
+            session.setAttribute("loginStatus", "logged in");
+            session.setAttribute("username", name);
+
+            UserPreferences prefs = fetchingpreferences(Email);
+            System.out.println("Retrieved user prefs");
+            System.out.println("Username: " + prefs.getUserName());
+            System.out.println("Gender: " + prefs.getGender());
+            System.out.println("Drinking: " + prefs.getDrinker());
+
+            //add these to the session not the model
+            session.setAttribute("UserName", prefs.getUserName());
+            session.setAttribute("Gender", prefs.getGender());
+            session.setAttribute("Profession", prefs.getProfession());
+            session.setAttribute("Interests", prefs.getInterests());
+            session.setAttribute("DesiredDestination", prefs.getDesiredDestination());
+            session.setAttribute("Smoker", prefs.getSmoker());
+            session.setAttribute("Drinker", prefs.getDrinker());
+            session.setAttribute("Image", prefs.getDrinker());
+            session.setAttribute("Email", prefs.getDrinker());
+
+            return new ModelAndView("userview");
+        }
     }
-
-
-
 
 
     @RequestMapping("/checklogin")
@@ -188,18 +204,12 @@ public class HomeController {
     }
 
 
-
     @RequestMapping("/existinguserlogin")
     public ModelAndView existinguserlogin() {
 
         return new ModelAndView("existinguserlogin");
     }
 
-    @RequestMapping("/findmatch")
-    public ModelAndView findmatch() {
-
-        return new ModelAndView("findmatch");
-    }
 
     @RequestMapping("/about")
     public ModelAndView about() {
@@ -217,8 +227,8 @@ public class HomeController {
     @RequestMapping("/userview")
     public ModelAndView userview() {
 
-            return new ModelAndView("userview");
-        }
+        return new ModelAndView("userview");
+    }
 
     @RequestMapping("/savedgoogleplaces")
     public ModelAndView savedgoogleplaces() {
@@ -227,6 +237,23 @@ public class HomeController {
 
     }
 
+    @RequestMapping("/messages")
+    public ModelAndView messages() {
+
+        return new ModelAndView("messages");
+    }
+
+    @RequestMapping("/welcome")
+    public ModelAndView welcome() {
+
+        return new ModelAndView("welcome");
+    }
+
+    @RequestMapping("/logout")
+    public ModelAndView logout() {
+
+        return new ModelAndView("logout");
+    }
 
     @RequestMapping("/groupon")
     public ModelAndView groupon() {
@@ -319,7 +346,8 @@ public class HomeController {
 
         int result = JOptionPane.showConfirmDialog(frame, panel,
                 "Match Messenger", JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE); JOptionPane.showConfirmDialog( null, "Awesome your match has been notified!","Confirmation", JOptionPane.DEFAULT_OPTION);
+                JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showConfirmDialog(null, "Awesome your match has been notified!", "Confirmation", JOptionPane.DEFAULT_OPTION);
 
 
         if (result == JOptionPane.YES_OPTION) {
@@ -335,7 +363,7 @@ public class HomeController {
 
 
     @RequestMapping(value = "/addplace")
-    public ModelAndView savedgoogleplaces
+    public ModelAndView addplace
             (@RequestParam("title") String Title)
     {
 
@@ -346,29 +374,25 @@ public class HomeController {
             return new ModelAndView("error", "ermsg", "Adding profile failed!");
         }
 
-        ModelAndView mv = new ModelAndView("savedgoogleplaces");
-        mv.addObject("Title", Title);
-
-        return mv;
+        return new ModelAndView("addplace", "SavedPlaces", "title");
 
     }
 
     @RequestMapping("/savedplaces")
 
-    public ModelAndView places(@RequestParam("Title") String Title)
+    public ModelAndView places()
     {
+        String Email = "dhillon7731@gmail.com";
 
-        ArrayList<SavedPlaces> savedPlaces= DAO.SavedPlaces(Title);
-        ModelAndView mv = new ModelAndView("/savedgoogleplaces", "SavedPlaces", savedPlaces);
-        mv.addObject("title", Title);
+        ArrayList<SavedPlaces> savedPlaceslist = DAO.SavedPlaces(Email);
+        ModelAndView mv = new ModelAndView("savedgoogleplaces", "SavedPlaces", savedPlaceslist);
 
         return mv;
     }
 
 
     @RequestMapping("/addDeal")
-    public ModelAndView addDeal ()
-    {
+    public ModelAndView addDeal() {
         try {
 
             HttpClient http = HttpClientBuilder.create().build();
@@ -411,8 +435,7 @@ public class HomeController {
     public ModelAndView match(@RequestParam("username") String UserName,
                               @RequestParam("desiredDestination") String desiredDestination,
                               @RequestParam("smoker") String Smoker,
-                              @RequestParam("drinker") String Drinker)
-    {
+                              @RequestParam("drinker") String Drinker) {
 
         ArrayList<UserMatch> matches = DAO.Matches(UserName, desiredDestination, Smoker, Drinker);
 
@@ -427,18 +450,15 @@ public class HomeController {
         return mv;
     }
 
-    public UserPreferences fetchingpreferences(String UserName) {
-        ArrayList<UserPreferences> list = DAO.Preferences(UserName);
+    public UserPreferences fetchingpreferences(String Email) {
+        ArrayList<UserPreferences> list = DAO.Preferences(Email);
         UserPreferences prefs = list.get(0);
 
         return prefs;
     }
 
-
-
-
     @RequestMapping("/Profiles")
-    public ModelAndView Profiles (@RequestParam ("UserID") int UserID) {
+    public ModelAndView Profiles(@RequestParam("UserID") int UserID) {
 
         ArrayList<MatchProfile> proList = DAO.Profiles(UserID);
 
@@ -447,5 +467,13 @@ public class HomeController {
 
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
+        httpSession.invalidate();
+        System.out.println("LOG OUT METHOD HAPPENED");
+        return new ModelAndView("logout");
 
+
+    }
 }

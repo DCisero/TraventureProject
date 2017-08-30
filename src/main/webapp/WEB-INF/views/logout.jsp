@@ -2,14 +2,14 @@
 
 <html>
 <head>
-    <title>Error Page</title>
+    <title>Logout</title>
     <link rel="stylesheet" href="/resources/styles.css">
 </head>
 <body>
 
-<h1>TRY AGAIN!</h1>
-Sorry, something went wrong. <br />
+<h1>You are now logged out, <i>Enjoy TraVenturing!</i></h1>
 
 <a href="welcome">TraVenture Home</a>
+
 </body>
 </html>

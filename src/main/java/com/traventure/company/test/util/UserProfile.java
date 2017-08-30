@@ -12,6 +12,7 @@ public class UserProfile {
     private String Smoker;
     private String Drinker;
     private String Image;
+    private String Email;
 
     public UserProfile() {
         UserName = "";
@@ -25,12 +26,13 @@ public class UserProfile {
         Smoker = "";
         Drinker = "";
         Image = "";
+        Email = "";
 
     }
 
     public UserProfile(String userName, String profession, int birthday, String gender, String city,
                        String state, String desiredDestination, String interests, String smoker,
-                       String drinker, String image) {
+                       String drinker, String image, String email) {
         UserName = userName;
         Profession = profession;
         Birthday = birthday;
@@ -42,6 +44,7 @@ public class UserProfile {
         Smoker = smoker;
         Drinker = drinker;
         Image = image;
+        Email = email;
 
     }
 
@@ -153,6 +156,16 @@ public class UserProfile {
     public void setImage(String image) {
 
         Image = image;
+    }
+
+    public String getEmail() {
+
+        return Email;
+    }
+
+    public void setEmail(String email) {
+
+        Email = email;
     }
 
 }
