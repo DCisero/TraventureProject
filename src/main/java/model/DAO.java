@@ -4,7 +4,7 @@ import com.traventure.company.test.util.MatchProfile;
 import com.traventure.company.test.util.SavedPlaces;
 import com.traventure.company.test.util.UserMatch;
 import com.traventure.company.test.util.UserProfile;
-import com.traventure.company.test.util.UserPreferences;
+
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
