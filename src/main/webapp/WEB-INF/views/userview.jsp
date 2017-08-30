@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/resources/styles.css">
 </head>
 
-<body>
+<>
 
 <h1>Welcome! </h1> <br/>
 
@@ -16,7 +16,7 @@
 </p>
 
 
-<img src="${Image}nth/0/"> <br />
+<img src="${sessionScope.Image}nth/0/"> <br />
 
 
 <p>Name: ${sessionScope.UserName}</p>
@@ -29,12 +29,15 @@
 
 <a href="/match?username=${UserName}&desiredDestination=${DesiredDestination}&smoker=${Smoker}&drinker=${Drinker}">Find Match </a> <br/>
 
+<a href="messages">Match Messaging</a><br/>
 
 <a href="/savedgoogleplaces"> Saved Places </a> <br>
 
  <a href="googleplaces">Search Staycation Destinations</a><br/>
 
-<a href="groupon">Search Vacation Deals</a>
+<a href="groupon">Search Vacation Deals</a> <br/>
+
+<a href="logout">Logout</a><br/>
 
 </body>
 </html>

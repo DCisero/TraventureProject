@@ -63,7 +63,9 @@ public class DAO {
             String Interests,
             String Smoker,
             String Drinker,
-            String Image) {
+            String Image,
+            String Email)
+    {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -75,7 +77,7 @@ public class DAO {
                     DBCredentials.PASSWORD);
 
             String addUsers2Command = "INSERT INTO userprofile " +
-                    "(UserName, Profession, Birthday, Gender, City, State, DesiredDestination, Interests, Smoker, Drinker, Image)" +
+                    "(UserName, Profession, Birthday, Gender, City, State, DesiredDestination, Interests, Smoker, Drinker, Image, Email)" +
                     "VALUES ('" +
                     UserName + "', '" +
                     Profession + "', '" +
@@ -87,7 +89,8 @@ public class DAO {
                     Interests + "', '" +
                     Smoker + "', '" +
                     Drinker + "', '" +
-                    Image + "')";
+                    Image + "', '" +
+                    Email + "')";
             System.out.println("SQL Query " + addUsers2Command);
 
             Statement st = mysqlConnection.createStatement();
@@ -125,7 +128,6 @@ public class DAO {
             Statement st = mysqlConnection.createStatement();
             int result = st.executeUpdate(addUsersGCommand);
 
-            //if (result == 1)
             return true;
 
         } catch (Exception ex) {
@@ -136,9 +138,7 @@ public class DAO {
 
     public static boolean userlogin(
             String email,
-            String password
-    )
-
+            String password)
     {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -204,13 +204,12 @@ public class DAO {
 
     public static boolean checkGoogleLogin(String email)
             throws SQLException {
-        System.out.println("THE EXCEPTION HAS BEEN THROWN");
+        System.out.println("DAO checkgooglelogin has been called");
 
         Connection connection = null; //manages connection
         PreparedStatement pt2 = null; //manages prepared statement
 
-
-        {  //connect to database
+        {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection mysqlConnection;
@@ -245,8 +244,9 @@ public class DAO {
 
 
     public static boolean addPlace(
-            String Title
-    ) {
+            String Title)
+    {
+        String Email = "dhillon7731@gmail.com";
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -258,9 +258,10 @@ public class DAO {
                     DBCredentials.PASSWORD);
 
             String addPlaceCommand = "INSERT INTO SavedPlaces " +
-                    "(Title)" +
+                    "(Title, Email) " +
                     "VALUES ('" +
-                    Title + "')";
+                    Title + "', '" +
+                    Email + "')";
             System.out.println("SQL Query " + addPlaceCommand);
             Statement st = mysqlConnection.createStatement();
             int results = st.executeUpdate(addPlaceCommand);
@@ -272,7 +273,7 @@ public class DAO {
         }
     }
 
-    public static ArrayList<SavedPlaces> SavedPlaces(String Title) {
+    public static ArrayList<SavedPlaces> SavedPlaces(String Email) {
 
 
         try {
@@ -283,11 +284,11 @@ public class DAO {
                     DBCredentials.USERNAME,
                     DBCredentials.PASSWORD);
 
-            String sql = ("SELECT title FROM SavedPlaces");
+            String sql = ("SELECT title FROM SavedPlaces WHERE Email = ?");
 
 
             PreparedStatement ps = (PreparedStatement) mysqlConnection.prepareStatement(sql);
-            ps.setString(1, Title);
+            ps.setString(1, Email);
 
             ResultSet result = ps.executeQuery();
 
@@ -370,10 +371,7 @@ public class DAO {
 
     }
 
-
-    //here is the method that brings the persons preferences back from the database
-    public static ArrayList<UserPreferences> Preferences(String UserName) {
-
+    public static ArrayList<UserPreferences> Preferences(String Email) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -383,10 +381,10 @@ public class DAO {
                     DBCredentials.USERNAME,
                     DBCredentials.PASSWORD);
 
-            String sql = ("SELECT UserName, Gender, Profession, Interests, DesiredDestination, Smoker, Drinker FROM userprofile WHERE UserName = ?");
+            String sql = ("SELECT UserName, Gender, Profession, Interests, DesiredDestination, Smoker, Drinker, Image FROM userprofile WHERE Email = ?");
 
             PreparedStatement ps = (PreparedStatement) mysqlConnection.prepareStatement(sql);
-            ps.setString(1, UserName);
+            ps.setString(1, Email);
 
             ResultSet result = ps.executeQuery();
 
@@ -399,7 +397,8 @@ public class DAO {
                         result.getString("Interests"),
                         result.getString("DesiredDestination"),
                         result.getString("Smoker"),
-                        result.getString("Drinker"));
+                        result.getString("Drinker"),
+                        result.getString("Image"));
                 list.add(temp);
             }
 
@@ -412,13 +411,7 @@ public class DAO {
     }
 
 
-
-
-
-
-
     public static ArrayList<MatchProfile> Profiles(int UserID) {
-
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -440,7 +433,6 @@ public class DAO {
                         result.getString("Profession"), result.getString("Interests"), result.getString("DesiredDestination"),
                         result.getString("Smoker"), result.getString("Drinker"));
                 proList.add(temp);
-
 
             }
 

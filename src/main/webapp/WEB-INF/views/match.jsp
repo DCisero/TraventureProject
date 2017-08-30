@@ -11,8 +11,8 @@
 
 <h1>TraVenture Matches</h1>
 
-<p>We have matched you with people who share your same Desired Destination, Smoker, and Drinker preference.
- Now, you have the power to choose one of the matches listed below and notify them via our Match Messenger. Happy traventuring!</p><br/>
+<p>Below are matches that share 3 profile preferences with you. Now, you have the power to choose one of
+    the matches and notify them via our Match Messenger. <i>Happy Traventuring!</i></p><br/>
 
 <form action="addMatch" method="post">
 <c:forEach items="${matches}" var="match">

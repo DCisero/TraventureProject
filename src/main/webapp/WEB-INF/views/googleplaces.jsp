@@ -183,7 +183,7 @@
             }
 
             window.infowindowContent = infowindowContent;
-            infowindowContent.children[0].children['place-icon'].src = place.icon;
+            infowindowContent.children[0].children['place-icon'].src = place.icon; <!--accesses the array via children-->
             infowindowContent.children[0].children['place-name'].textContent = place.name;
             infowindowContent.children[0].children['place-address'].textContent = address;
 

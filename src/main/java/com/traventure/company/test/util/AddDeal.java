@@ -5,6 +5,7 @@ public class AddDeal {
     private String pitchHtml;
 
     public AddDeal(String pitchHtml) {
+
         this.pitchHtml = pitchHtml;
     }
     public String getPitchHtml() {

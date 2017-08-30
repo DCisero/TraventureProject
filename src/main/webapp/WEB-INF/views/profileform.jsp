@@ -119,6 +119,8 @@
 
 User Name: <input type="text" name="UserName" maxlength="10"><br/>
 
+Email: <input type="text" name="Email" maxlength="65"><br/>
+
 Profession: <select name="Profession">
     <option value="IT">IT</option>
     <option value="Sales">Sales</option>
